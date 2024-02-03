@@ -17,4 +17,4 @@ To set up the project on your local machine:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/ashishjsharda/rust-web-scraper.git)https://github.com/ashishjsharda/rust-web-scraper.git
+git clone https://github.com/ashishjsharda/rust-web-scraper.git
