@@ -34,4 +34,4 @@ fn scrape(url: &str) -> Result<(), reqwest::Error> {
 
     Ok(())
 }
-// The output of the program will be the titles of the articles on the Rust website. The program uses the reqwest crate to make an HTTP request to the website and retrieve the HTML content. It then uses the scraper crate to parse the HTML and extract the titles of the articles using a CSS selector. Finally, it prints the titles to the console.
+// The output of the program will be the titles of the articles on the Rust website. 
