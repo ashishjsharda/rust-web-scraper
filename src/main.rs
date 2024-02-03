@@ -1,18 +1,37 @@
-extern crate reqwest;
-extern crate scraper;
-
+use reqwest;
 use scraper::{Html, Selector};
-use reqwest::blocking::get;
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+
+fn main() {
+
     let url = "https://www.rust-lang.org";
-    let response = reqwest::blocking::get(url)?;
-    assert!(response.status().is_success());
-    let body = response.text()?;
-    let fragment = Html::parse_document(&body);
-    let selector = Selector::parse("a").unwrap();
-    for element in fragment.select(&selector) {
-        let href = element.value().attr("href").unwrap_or_default();
-        println!("{}", href);
+
+    // Call the scrape function
+    if let Err(e) = scrape(url) {
+        println!("Scraping error: {}", e);
     }
+}
+
+fn scrape(url: &str) -> Result<(), reqwest::Error> {
+    // Create a client with a User-Agent header
+    let client = reqwest::blocking::Client::builder()
+        .user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
+        .build()?;
+
+
+    let html = client.get(url).send()?.text()?;
+
+    // Parse the HTML
+    let document = Html::parse_document(&html);
+
+    // Create a Selector to find <h2> tags
+    let selector = Selector::parse("h2").unwrap();
+
+    // Iterate over each <h2> tag and print its text content
+    for element in document.select(&selector) {
+        let title = element.text().collect::<Vec<_>>().join("");
+        println!("Article title: {}", title);
+    }
+
     Ok(())
 }
+// The output of the program will be the titles of the articles on the Rust website. The program uses the reqwest crate to make an HTTP request to the website and retrieve the HTML content. It then uses the scraper crate to parse the HTML and extract the titles of the articles using a CSS selector. Finally, it prints the titles to the console.
